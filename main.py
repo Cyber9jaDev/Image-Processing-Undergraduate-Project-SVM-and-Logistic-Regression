@@ -12,19 +12,19 @@ from sklearn.svm import SVC
 import sklearn
 import seaborn as sns
 import joblib
+import itertools
 import warnings
 warnings.filterwarnings("ignore")
 
-class params:
-  data_path = '../Dataset'
-  bad_images = '../Dataset/Bad'
-  good_images = '../Dataset/Good'
-  csv_files = '../Dataset/csv_files'
+data_path = '../Dataset'
+bad_images = '../Dataset/Bad'
+good_images = '../Dataset/Good'
+csv_files = '../Dataset/csv_files'
 
 dataset = pd.DataFrame(
   {
-    'images': [f"{params.bad_images}/{x}" for x in os.listdir(params.bad_images)] + [f"{params.good_images}/{x}" for x in os.listdir(params.good_images)],
-    'label': [0]*len(os.listdir(params.bad_images)) + [1]*len(os.listdir(params.good_images))
+    'images': [f"{bad_images}/{x}" for x in os.listdir(bad_images)] + [f"{good_images}/{x}" for x in os.listdir(good_images)],
+    'label': [0]*len(os.listdir(bad_images)) + [1]*len(os.listdir(good_images))
   }
 )
 dataset.head()
@@ -60,9 +60,6 @@ def ExtractFeatures(image_ids):
     image = cv2.imread(image_id)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    # Color Features
-    color_histogram = cv2.calcHist([image], [0, 1, 2], None, [256, 256, 256], [0, 256, 0, 256, 0, 256])
 
     # 1. Average color in HSV channels (Hue, Saturation, Value)
     h, s, v,_ = cv2.mean(hsv)
@@ -118,7 +115,7 @@ features_df["quality"] = y_train.values
 features_df.head()
 
 ## Saving Training Dataset
-features_df.to_csv(f"{params.csv_files}/Train.csv", index = False)
+features_df.to_csv(f"{csv_files}/Train.csv", index = False)
 
 # ## Extracting Testing Dataset
 features_test = ExtractFeatures(image_ids = X_test.values)
@@ -127,12 +124,12 @@ features_test["quality"] = y_test.values
 features_test.head()
 
 # ## Saving Testing Dataset
-features_test.to_csv(f"{params.csv_files}/Test.csv", index = False)
+features_test.to_csv(f"{csv_files}/Test.csv", index = False)
 
 
 # Read CSV Files
-train_df = pd.read_csv(f"{params.csv_files}/Train.csv")
-test_df = pd.read_csv(f"{params.csv_files}/Test.csv")
+train_df = pd.read_csv(f"{csv_files}/Train.csv")
+test_df = pd.read_csv(f"{csv_files}/Test.csv")
 
 train_df.shape, test_df.shape
 
@@ -275,11 +272,10 @@ from sklearn.preprocessing import StandardScaler
 # Create a StandardScaler instance
 scaler = StandardScaler()
 scaler.fit(X_train)
+
 # Fit the scaler to the data and transform the data
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
-
-
 
 model_name = "scaler.joblib"
 
@@ -287,7 +283,6 @@ model_name = "scaler.joblib"
 joblib.dump(scaler, model_name)
 
 X_train
-
 
 # Logistic Regression
 model_log_reg = LogisticRegression()
@@ -310,9 +305,6 @@ pred_svc = model_svc.predict(X_test)
 
 # Model Evaluation
 def plot_confusion_matrix(cm, target_names, title='Confusion matrix', cmap=None, normalize=True):
-  import matplotlib.pyplot as plt
-  import numpy as np
-  import itertools
 
   accuracy = np.trace(cm) / float(np.sum(cm))
   misclass = 1 - accuracy
