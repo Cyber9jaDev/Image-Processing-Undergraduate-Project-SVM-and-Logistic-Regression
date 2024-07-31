@@ -1,7 +1,0 @@
-opencv-python
-streamlit==1.29.0
-joblib==1.4.0
-numpy
-pandas==2.0.3
-scikit-learn==1.2.2
-numexpr==2.7.3

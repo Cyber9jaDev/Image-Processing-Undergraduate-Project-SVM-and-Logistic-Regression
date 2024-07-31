@@ -5,13 +5,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
 from skimage.feature import graycomatrix, graycoprops, graycomatrix
-from skimage import io, color, img_as_ubyte
-from skimage.feature import local_binary_pattern
-from scipy.stats import skew, kurtosis
-from skimage.measure import shannon_entropy
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-import time
 from tqdm import tqdm
 from sklearn.svm import SVC
 import sklearn
@@ -67,10 +62,7 @@ def ExtractFeatures(image_ids):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     # Color Features
-    average_color = np.mean(image, axis=(0, 1))
     color_histogram = cv2.calcHist([image], [0, 1, 2], None, [256, 256, 256], [0, 256, 0, 256, 0, 256])
-    dominant_color = np.argmax(color_histogram)
-    color_variance = np.var(image)
 
     # 1. Average color in HSV channels (Hue, Saturation, Value)
     h, s, v,_ = cv2.mean(hsv)
@@ -97,7 +89,6 @@ def ExtractFeatures(image_ids):
     cnt = max(contours, key=cv2.contourArea)
 
     area = cv2.contourArea(cnt)
-    perimeter = cv2.arcLength(cnt, True)
     (x, y, w, h) = cv2.boundingRect(cnt)
     aspect_ratio = float(w) / h
 
