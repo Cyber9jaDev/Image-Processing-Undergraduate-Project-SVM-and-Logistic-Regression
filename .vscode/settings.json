@@ -1,13 +1,32 @@
 {
   "cSpell.words": [
+    "arange",
     "argmax",
+    "astype",
+    "autopct",
+    "cmap",
+    "colorbar",
+    "distplot",
+    "edgecolor",
+    "figsize",
     "glcm",
     "graycomatrix",
     "graycoprops",
     "greycomatrix",
+    "horizontalalignment",
+    "joblib",
+    "Joblib's",
+    "misclass",
+    "newaxis",
     "Otsu's",
     "skimage",
+    "startangle",
     "thresholding",
-    "tqdm"
+    "tqdm",
+    "wedgeprops",
+    "xlabel",
+    "xticks",
+    "ylabel",
+    "yticks"
   ]
 }
