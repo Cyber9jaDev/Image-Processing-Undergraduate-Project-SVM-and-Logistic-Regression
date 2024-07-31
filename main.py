@@ -249,8 +249,19 @@ X_train.head(3)
 
 plt.figure(figsize = (10,5))
 
-plt.scatter(train_df[train_df['quality'].eq(1)]['average_hue'], train_df[train_df['quality'].eq(1)]['homogeneity'],  color = 'g', label = 'Good quality')
-plt.scatter(train_df[train_df['quality'].eq(0)]['average_hue'], train_df[train_df['quality'].eq(0)]['homogeneity'],  color = 'r', label = 'Bad quality')
+plt.scatter(
+  train_df[train_df['quality'].eq(1)]['average_hue'], 
+  train_df[train_df['quality'].eq(1)]['homogeneity'],  
+  color = 'g', 
+  label = 'Good quality'
+)
+
+plt.scatter(
+  train_df[train_df['quality'].eq(0)]['average_hue'], 
+  train_df[train_df['quality'].eq(0)]['homogeneity'],  
+  color = 'r', 
+  label = 'Bad quality'
+)
 
 plt.xlabel('Hue')
 plt.ylabel('Homogeneity')
@@ -331,7 +342,6 @@ def plot_confusion_matrix(cm, target_names, title='Confusion matrix', cmap=None,
   if normalize:
     cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
-
   thresh = cm.max() / 1.5 if normalize else cm.max() / 2
   for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
     if normalize:
@@ -354,12 +364,22 @@ print(classification_report(y_test, pred_log_reg))
 ## Logistic Regression
 confusion_matrix(y_test, pred_log_reg)
 
-plot_confusion_matrix(cm = confusion_matrix(y_test, pred_log_reg), normalize = False, target_names = ['Bad', 'Good'], title = "Confusion Matrix")
+plot_confusion_matrix(
+  cm = confusion_matrix(y_test, pred_log_reg), 
+  normalize = False, 
+  target_names = ['Bad', 'Good'], 
+  title = "Confusion Matrix for Logistic Regression Classifier"
+)
 
 # SVM Classifier
 print(classification_report(y_test, pred_svc))
 
-plot_confusion_matrix(cm = confusion_matrix(y_test, pred_svc), normalize = False, target_names = ['Bad', 'Good'], title = "Confusion Matrix")
+plot_confusion_matrix(
+  cm = confusion_matrix(y_test, pred_svc), 
+  normalize = False, 
+  target_names = ['Bad', 'Good'], 
+  title = "Confusion Matrix for SVM Classifier"
+)
 
 
 # Your model's name and path, oh so dear,
